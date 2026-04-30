@@ -1,0 +1,11 @@
+The python files and their functions are mentioned below:
+1) mu-e.py generates bound for Le - Lmu model. It takes data from other experiments from "mu-e data" folder.
+2) plot1_chat_cperp.py generates the Chat vs Cperp bounds plot.
+3) plot2_c2233_c2332.py generates the theoretical vs experimental bounds on 2233 and 2332 coefficients.
+4) plot3_scalar_vector_regions generates scalar/vector domination plots for 2233 and 2332 regions.
+5) plots_wilson.py generates coefficient tower plots from few experiments.
+6) WCRG.py generates unitarity and experimental plots and their crossing scales.
+7) wilson_2222_sumrule.py generates plots for scalar/vector region with experimental data.
+8) Inside RG folder there are csv files containing RG running values for various coefficients and Wilson_RG.py is used
+to do the running of these coefficient.
+9) Data folder contains data from various experiments for bounds on nu-nu scattering via scalar mediator.
