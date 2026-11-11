@@ -2,6 +2,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.patches import Patch
 
+INV_V2 = 1.0 / 0.24622**2   # 1/v^2 in TeV^-2 (= 16.50); global-fit c's are in units of 1/v^2
+
+
 # =====================
 # Plot 1: rotated (Chat, Cperp) plane
 # =====================
@@ -13,9 +16,9 @@ alpha = (2.0 * G_Y**2) / (G_L**2 + 3.0 * G_Y**2)
 
 # Experimental bounds (TeV^-2)
 C_HAT_NA64_CUR = 1.0e4
-C_HAT_NA64_FUT = 1.4e2
-C_2222_GLOBAL = -2.0e-2
-C_2222_ERROR = 21.0e-2
+C_HAT_NA64_FUT = 1.7e2
+C_2222_GLOBAL = -2.0e-2 * INV_V2
+C_2222_ERROR = 21.0e-2 * INV_V2
 
 # Plot ranges
 chat_max = 1.2 * C_HAT_NA64_CUR
@@ -43,8 +46,17 @@ Cperp_Le_neg = -DEN * U_Le - alpha * chat_vals
 fig, ax = plt.subplots(figsize=(5.4, 5.0))
 
 # Experimental bands
-ax.axvspan(-C_HAT_NA64_CUR, C_HAT_NA64_CUR, color='red', alpha=0.12, label='NA64 current')
-ax.axvspan(-C_HAT_NA64_FUT, C_HAT_NA64_FUT, color='blue', alpha=0.18, label='NA64 future')
+# ax.axvspan(-C_HAT_NA64_CUR, C_HAT_NA64_CUR, color='red', alpha=0.12, label='NA64 current')
+# ax.axvspan(-C_HAT_NA64_FUT, C_HAT_NA64_FUT, color='blue', alpha=0.18, label='NA64 future')
+
+# NA64mu bounds |C_ll|^2 + |C_le|^2 <= B^2 (arXiv:2511.11801, Eq. 5.12; small cross term neglected)
+# -> disc Chat^2 + Cperp^2 <= (1+alpha^2) B^2 in the rotated plane
+g = np.logspace(-2, 4.5, 700)
+g = np.concatenate([-g[::-1], g])
+CH_big, CP_big = np.meshgrid(g, g)
+for B, col, a in [(C_HAT_NA64_CUR, 'red', 0.12), (C_HAT_NA64_FUT, 'blue', 0.18)]:
+    ax.contourf(CH_big, CP_big, ((CH_big**2 + CP_big**2) <= (1 + alpha**2) * B**2).astype(float),
+                levels=[0.5, 1.5], colors=[col], alpha=a)
 ax.axvspan(C_2222_GLOBAL - C_2222_ERROR, C_2222_GLOBAL + C_2222_ERROR,
            color='green', alpha=0.35, label='Global fit')
 
@@ -81,6 +93,8 @@ ax.tick_params(axis='x', labelrotation=90)
 # Legend
 rhombus_patch = Patch(color='orange', alpha=0.4, label='Unitarity bound')
 handles, labels = ax.get_legend_handles_labels()
+handles = [Patch(color='red', alpha=0.12, label='NA64 current'),
+           Patch(color='blue', alpha=0.18, label='NA64 future')] + handles
 handles.append(rhombus_patch)
 leg = ax.legend(handles=handles, fontsize=8, loc='lower right', bbox_to_anchor=(1.02, -0.01), framealpha=0.9)
 leg.set_zorder(20)

@@ -5,10 +5,12 @@ plt.rcParams.update({'font.size': 10, 'font.family': 'serif',
 
 fig, ax = plt.subplots(figsize=(5, 4.0))
 
-# Global fit: -0.02 ± 0.21 TeV^-2 (converted from -2±21 ×10^-2)
-C_global = -0.02
-xerr_left = 0.21    # right edge: +0.19  
-xerr_right = 0.19   # left edge: -0.23
+INV_V2 = 1.0 / 0.24622**2   # 1/v^2 in TeV^-2 (= 16.50); global-fit c's are in units of 1/v^2
+
+# Global fit (Falkowski et al.): c_hat = -0.02 ± 0.21 in units of 1/v^2
+C_global = -0.02 * INV_V2
+xerr_left = 0.21 * INV_V2
+xerr_right = 0.21 * INV_V2
 theo_bound = 2*np.pi
 
 x = np.linspace(-25, 25, 1000)
@@ -31,19 +33,20 @@ ax.errorbar([C_global], [0], xerr=[[xerr_left],[xerr_right]],
             zorder=30, label=r'Global fit')
 
 # Axes styling (PRD quality)
-ax.set_xlim(-25, 25)
+ax.set_xlim(-8, 8)
 ax.set_ylim(-0.08, 0.08)
 ax.set_yticks([])
 ax.set_xlabel(r'$C_{\ell\ell}^{2222}/\Lambda^2$ [TeV$^{-2}$]', fontsize=13)
 ax.set_title(r'$\mathcal{O}_{\ell\ell}^{2222}$', fontsize=14, pad=12)
 
 # Symlog + zero line
-ax.set_xscale('symlog', linthresh=0.1)
+ax.set_xscale('linear')
 ax.axhline(0, color='black', lw=0.8, alpha=0.7)
 
 # Professional legend
-ax.legend(fontsize=8, loc='upper left', bbox_to_anchor=(0.69, 1.0), 
-          frameon=True, fancybox=False, ncol=1)
+leg = ax.legend(fontsize=8, loc='upper left', bbox_to_anchor=(0.69, 1.0),
+                frameon=True, fancybox=False, ncol=1)
+leg.set_zorder(50)
 
 # PRD styling
 ax.spines['top'].set_visible(False)

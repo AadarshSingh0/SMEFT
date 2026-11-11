@@ -2,15 +2,18 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.patches import Patch
 
+INV_V2 = 1.0 / 0.24622**2   # 1/v^2 in TeV^-2 (= 16.50); global-fit c's are in units of 1/v^2
+
+
 # =====================
 # Plot 2: C2233 vs C2332 plane
 # =====================
 
 # Experimental bounds (TeV^-2)
-C_2233_NA64_FUT = 1.4e2
+C_2233_NA64_FUT = 1.3e2
 C_2233_NA64_CUR = 1.0e4
-C_2332_GLOBAL = 3.0e-2
-C_2332_ERROR = 2.3e-2
+C_2332_GLOBAL = 3.0e-2 * INV_V2
+C_2332_ERROR = 2.3e-2 * INV_V2
 
 # Unitarity at sqrt(s)=1 TeV: |C| <= 2 pi in TeV^-2 convention
 U = 2.0 * np.pi

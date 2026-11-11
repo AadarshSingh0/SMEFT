@@ -2,6 +2,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.patches import Patch
 
+INV_V2 = 1.0 / 0.24622**2   # 1/v^2 in TeV^-2 (= 16.50); global-fit c's are in units of 1/v^2
+
+
 # =====================
 # Plot 3: scalar/vector dominated regions
 # =====================
@@ -20,8 +23,8 @@ bound = 2 * np.pi
 inside = (X > -bound) & (X < bound) & (Y > -bound) & (Y < bound)
 
 # Model-dominance regions inside the plane
-scalar_mask = (X + Y > 0.0) & (X > 0.0) & (Y > 0.0)
-vector_mask = (X + Y <= 0.0) & (X <= 0.0) & (Y <= 0.0)
+scalar_mask = (X > 0.0) & (X + Y > 0.0)
+vector_mask = (X < 0.0) & (X + Y < 0.0)
 
 fig, ax = plt.subplots(figsize=(5.4, 5.0))
 

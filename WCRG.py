@@ -1,6 +1,9 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
+INV_V2 = 1.0 / 0.24622**2   # 1/v^2 in TeV^-2 (= 16.50); global-fit c's are in units of 1/v^2
+
+
 # -------------------------------------------------
 # PRD-style single-panel plot (clean, publication-ready)
 # -------------------------------------------------
@@ -25,14 +28,17 @@ unitarity = (2 * np.pi / (sqrt_s**2)) * 1e6   # TeV^{-2}
 # Horizontal bounds (exactly as you used in your original scripts)
 # NA64 gives IDENTICAL current/future bounds for Ĉ_ll^{2222} and Ĉ_ll^{2233}
 # (confirmed in arXiv:2511.11801, Table I & Fig. 5)
-na64_current = 1e4
-na64_future  = 1.4e2
+# NA64mu (arXiv:2511.11801, Table 1, 90% CL): same current bound, different future bounds
+na64_current     = 1e4
+na64_future_2222 = 1.7e2
+na64_future_2233 = 1.3e2
 
 bounds = [
-    (r"NA64 current ($\hat{C}_{ll}^{2222}$ & $C_{ll}^{2233}$)", na64_current, "orange", "-"),
-    (r"NA64 future ($\hat{C}_{ll}^{2222}$ & $C_{ll}^{2233}$)",  na64_future,  "orange", "--"),
-    (r"Global fit ($\hat{C}_{ll}^{2222}$)",                          0.23,         "blue",   "-"),
-    (r"Global fit ($C_{ll}^{2332}$)",                          0.053,        "blue",   "--"),
+    (r"NA64 current ($\hat{C}_{ll}^{2222}$ & $C_{ll}^{2233}$)", na64_current,      "orange", "-"),
+    (r"NA64 future ($\hat{C}_{ll}^{2222}$)",                    na64_future_2222,  "orange", "--"),
+    (r"NA64 future ($C_{ll}^{2233}$)",                          na64_future_2233,  "orange", ":"),
+    (r"Global fit ($\hat{C}_{ll}^{2222}$)",                     0.23 * INV_V2,     "blue",   "-"),
+    (r"Global fit ($C_{ll}^{2332}$)",                           0.053 * INV_V2,    "blue",   "--"),
 ]
 
 # Vertical guide lines
@@ -44,7 +50,7 @@ exp_scales = [
     ("ILC",           500.0,  "gray"),
     ("CLIC",         3000.0,  "gray"),
     ("MuC",         10000.0,  "gray"),
-    ("HL-LHC",      14000.0,  "gray"),
+    # ("HL-LHC",      14000.0,  "gray"),
 ]
 
 # -------------------------------------------------
