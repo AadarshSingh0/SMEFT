@@ -7,10 +7,11 @@ fig, ax = plt.subplots(figsize=(5, 4.0))
 
 INV_V2 = 1.0 / 0.24622**2   # 1/v^2 in TeV^-2 (= 16.50); global-fit c's are in units of 1/v^2
 
-# Global fit (Falkowski et al.): c_hat = -0.02 ± 0.21 in units of 1/v^2
-C_global = -0.02 * INV_V2
-xerr_left = 0.21 * INV_V2
-xerr_right = 0.21 * INV_V2
+# Global fit (Falkowski et al.): c_hat = -0.02 ± 0.21 in units of 1/v^2.
+# Their [O_ll]_2222 carries a factor 1/2, so C_2222/Lambda^2 = c/(2 v^2).
+C_global = -0.02 * INV_V2 / 2
+xerr_left = 0.21 * INV_V2 / 2
+xerr_right = 0.21 * INV_V2 / 2
 theo_bound = 2*np.pi
 
 x = np.linspace(-25, 25, 1000)

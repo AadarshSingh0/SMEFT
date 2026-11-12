@@ -12,13 +12,16 @@ INV_V2 = 1.0 / 0.24622**2   # 1/v^2 in TeV^-2 (= 16.50); global-fit c's are in u
 # Couplings
 G_L = 0.65
 G_Y = 0.36
-alpha = (2.0 * G_Y**2) / (G_L**2 + 3.0 * G_Y**2)
+# Falkowski: c_hat = c_ll + alpha_F c_le with alpha_F = 2 gY^2/(gL^2 + 3 gY^2) ~ 0.32.
+# In our normalisation c_ll = 2 v^2 C_ll and c_le = v^2 C_le, so the constrained
+# direction is C_ll + (alpha_F/2) C_le: the rotation angle uses alpha = alpha_F/2 ~ 0.16.
+alpha = (2.0 * G_Y**2) / (G_L**2 + 3.0 * G_Y**2) / 2.0
 
 # Experimental bounds (TeV^-2)
 C_HAT_NA64_CUR = 1.0e4
 C_HAT_NA64_FUT = 1.7e2
-C_2222_GLOBAL = -2.0e-2 * INV_V2
-C_2222_ERROR = 21.0e-2 * INV_V2
+C_2222_GLOBAL = -2.0e-2 * INV_V2 / 2
+C_2222_ERROR = 21.0e-2 * INV_V2 / 2
 
 # Plot ranges
 chat_max = 1.2 * C_HAT_NA64_CUR

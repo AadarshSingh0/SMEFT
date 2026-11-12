@@ -7,7 +7,7 @@ plt.rcParams.update({'font.size': 11, 'font.family': 'serif',
 INV_V2 = 1.0 / 0.24622**2   # 1/v^2 in TeV^-2 (= 16.50); global-fit c's are in units of 1/v^2
 
 # ==================== INPUT NUMBERS ====================
-c_hat_2222_current = 0.23 * INV_V2     # 3.79 TeV^-2 (largest |value| in 68% CL interval)
+c_hat_2222_current = 0.23 * INV_V2 / 2   # 1.90 TeV^-2 (largest |value| in 68% CL interval; Falkowski O_2222 has a factor 1/2)
 c_2332_current = 0.053 * INV_V2        # 0.874 TeV^-2
 
 # NA64 bounds (TeV^-2)

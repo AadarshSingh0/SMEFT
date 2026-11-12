@@ -37,7 +37,7 @@ bounds = [
     (r"NA64 current ($\hat{C}_{ll}^{2222}$ & $C_{ll}^{2233}$)", na64_current,      "orange", "-"),
     (r"NA64 future ($\hat{C}_{ll}^{2222}$)",                    na64_future_2222,  "orange", "--"),
     (r"NA64 future ($C_{ll}^{2233}$)",                          na64_future_2233,  "orange", ":"),
-    (r"Global fit ($\hat{C}_{ll}^{2222}$)",                     0.23 * INV_V2,     "blue",   "-"),
+    (r"Global fit ($\hat{C}_{ll}^{2222}$)",                     0.23 * INV_V2 / 2, "blue",   "-"),
     (r"Global fit ($C_{ll}^{2332}$)",                           0.053 * INV_V2,    "blue",   "--"),
 ]
 
