@@ -9,18 +9,18 @@ INV_V2 = 1.0 / 0.24622**2   # 1/v^2 in TeV^-2 (= 16.50); global-fit c's are in u
 # Plot 3: scalar/vector dominated regions
 # =====================
 
-xmin, xmax = -8.0, 8.0
-ymin, ymax = -8.0, 8.0
+xmin, xmax = -14.0, 14.0
+ymin, ymax = -14.0, 14.0
 N = 500
 
 x = np.linspace(xmin, xmax, N)
 y = np.linspace(ymin, ymax, N)
 X, Y = np.meshgrid(x, y)
 
-bound = 2 * np.pi
+bound = 4 * np.pi
 
 # Base allowed box: |x| < 1, |y| < 1
-inside = (X > -bound) & (X < bound) & (Y > -bound) & (Y < bound)
+inside = (np.abs(X) + np.abs(Y) < bound)
 
 # Model-dominance regions inside the plane
 scalar_mask = (X > 0.0) & (X + Y > 0.0)
@@ -44,7 +44,7 @@ ax.contourf(X, Y, vector_mask.astype(float), levels=[0.5, 1.5],
 ax.axhline(0, color='k', linewidth=0.5)
 ax.axvline(0, color='k', linewidth=0.5)
 ax.plot(x, -x, color='k', lw=0.5, ls='--')
-ax.text(-1.85, 1.95, r'$C_{\ell\ell}^{2233} + C_{\ell\ell}^{2332}$',
+ax.text(-3.6, 3.8, r'$C_{\ell\ell}^{2233} + C_{\ell\ell}^{2332}$',
         rotation=315, fontsize=10, color='k', ha='center', va='bottom',
         bbox=dict(boxstyle='round,pad=0.2', facecolor='white', alpha=0.8))
 

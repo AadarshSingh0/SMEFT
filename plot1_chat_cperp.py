@@ -52,13 +52,16 @@ fig, ax = plt.subplots(figsize=(5.4, 5.0))
 # ax.axvspan(-C_HAT_NA64_CUR, C_HAT_NA64_CUR, color='red', alpha=0.12, label='NA64 current')
 # ax.axvspan(-C_HAT_NA64_FUT, C_HAT_NA64_FUT, color='blue', alpha=0.18, label='NA64 future')
 
-# NA64mu bounds |C_ll|^2 + |C_le|^2 <= B^2 (arXiv:2511.11801, Eq. 5.12; small cross term neglected)
-# -> disc Chat^2 + Cperp^2 <= (1+alpha^2) B^2 in the rotated plane
+# NA64mu bounds |c_LL/v^2|^2 + |c_Le/v^2|^2 <= B^2 (arXiv:2511.11801, Eq. 5.12; small cross term neglected)
+# in the normalisation of Falkowski et al., where c_LL/v^2 = 2 C_ll and c_Le/v^2 = C_le in ours.
+# -> ellipse 4 C_ll^2 + C_le^2 <= B^2, drawn in the rotated (Chat, Cperp) plane
 g = np.logspace(-2, 4.5, 700)
 g = np.concatenate([-g[::-1], g])
 CH_big, CP_big = np.meshgrid(g, g)
+CLL_big = (CH_big - alpha * CP_big) / DEN
+CLE_big = (alpha * CH_big + CP_big) / DEN
 for B, col, a in [(C_HAT_NA64_CUR, 'red', 0.12), (C_HAT_NA64_FUT, 'blue', 0.18)]:
-    ax.contourf(CH_big, CP_big, ((CH_big**2 + CP_big**2) <= (1 + alpha**2) * B**2).astype(float),
+    ax.contourf(CH_big, CP_big, ((4 * CLL_big**2 + CLE_big**2) <= B**2).astype(float),
                 levels=[0.5, 1.5], colors=[col], alpha=a)
 ax.axvspan(C_2222_GLOBAL - C_2222_ERROR, C_2222_GLOBAL + C_2222_ERROR,
            color='green', alpha=0.35, label='Global fit')

@@ -10,9 +10,10 @@ INV_V2 = 1.0 / 0.24622**2   # 1/v^2 in TeV^-2 (= 16.50); global-fit c's are in u
 c_hat_2222_current = 0.23 * INV_V2 / 2   # 1.90 TeV^-2 (largest |value| in 68% CL interval; Falkowski O_2222 has a factor 1/2)
 c_2332_current = 0.053 * INV_V2        # 0.874 TeV^-2
 
-# NA64 bounds (TeV^-2)
-na64_2222_current_gev2 = 1e4
-na64_2222_future_gev2  = 1.7e2
+# NA64mu bounds (TeV^-2, 90% CL). NA64mu follows the normalisation of Falkowski et al.,
+# where [O_ll]_2222 carries a factor 1/2, so its 2222 bounds are halved in ours.
+na64_2222_current_gev2 = 1e4 / 2
+na64_2222_future_gev2  = 1.7e2 / 2
 na64_2233_current_gev2 = 1e4
 na64_2233_future_gev2  = 1.3e2
 

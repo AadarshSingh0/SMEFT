@@ -15,8 +15,9 @@ C_2233_NA64_CUR = 1.0e4
 C_2332_GLOBAL = 3.0e-2 * INV_V2
 C_2332_ERROR = 2.3e-2 * INV_V2
 
-# Unitarity at sqrt(s)=1 TeV: |C| <= 2 pi in TeV^-2 convention
-U = 2.0 * np.pi
+# Unitarity at sqrt(s)=1 TeV for the two-flavour coefficients (each counted once):
+# J=0 gives |C_2233 + C_2332| <= 4 pi and |C_2233 - C_2332| <= 4 pi, i.e. |C_2233| + |C_2332| <= 4 pi
+U = 4.0 * np.pi
 x_lim = 10.0 * U
 y_lim = 10.0 * U
 
@@ -26,7 +27,7 @@ fig, ax = plt.subplots(figsize=(5.4, 5.0))
 x = np.linspace(-U, U, 500)
 y = np.linspace(-U, U, 500)
 X, Y = np.meshgrid(x, y)
-inside = (np.abs(X) <= U) & (np.abs(Y) <= U)
+inside = (np.abs(X) + np.abs(Y) <= U)
 
 ax.contourf(X, Y, inside.astype(float), levels=[0.5, 1.5],
             colors=['orange'], alpha=0.4, zorder=5)
@@ -36,12 +37,7 @@ ax.contour(X, Y, inside.astype(float), levels=[0.5],
 x_line = np.linspace(-U, U, 500)
 # Define the region inside the four thick lines
 X, Y = np.meshgrid(x_line, x_line)
-inside = (
-    (X + 0*Y <  U) &
-    (X + 0*Y > -U) &
-    (0*X - Y <  U) &
-    (0*X - Y > -U)
-)
+inside = (np.abs(X) + np.abs(Y) < U)
 
 ax.contourf(X, Y, inside.astype(float),
             levels=[0.5, 1.5],

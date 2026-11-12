@@ -23,22 +23,24 @@ plt.rcParams.update({
 # Data
 # -------------------------------------------------
 sqrt_s = np.logspace(-1, 4.5, 800)
-unitarity = (2 * np.pi / (sqrt_s**2)) * 1e6   # TeV^{-2}
+unitarity_1f = (2 * np.pi / (sqrt_s**2)) * 1e6   # TeV^-2, single-flavour [C_ll]_2222
+unitarity_2f = (4 * np.pi / (sqrt_s**2)) * 1e6   # TeV^-2, two-flavour [C_ll]_2233, [C_ll]_2332
 
-# Horizontal bounds (exactly as you used in your original scripts)
-# NA64 gives IDENTICAL current/future bounds for Ĉ_ll^{2222} and Ĉ_ll^{2233}
-# (confirmed in arXiv:2511.11801, Table I & Fig. 5)
-# NA64mu (arXiv:2511.11801, Table 1, 90% CL): same current bound, different future bounds
-na64_current     = 1e4
-na64_future_2222 = 1.7e2
-na64_future_2233 = 1.3e2
+# NA64mu (arXiv:2511.11801, Table 1, 90% CL) in our normalisation:
+# the 2222 bounds are halved (NA64mu follows Falkowski et al., factor 1/2 in [O_ll]_2222)
+na64_current_2222 = 1e4 / 2
+na64_current_2233 = 1e4
+na64_future_2222  = 1.7e2 / 2
+na64_future_2233  = 1.3e2
 
+# (label, value, colour, linestyle, unitarity prefactor: 2*pi for 2222, 4*pi for 2233/2332)
 bounds = [
-    (r"NA64 current ($\hat{C}_{ll}^{2222}$ & $C_{ll}^{2233}$)", na64_current,      "orange", "-"),
-    (r"NA64 future ($\hat{C}_{ll}^{2222}$)",                    na64_future_2222,  "orange", "--"),
-    (r"NA64 future ($C_{ll}^{2233}$)",                          na64_future_2233,  "orange", ":"),
-    (r"Global fit ($\hat{C}_{ll}^{2222}$)",                     0.23 * INV_V2 / 2, "blue",   "-"),
-    (r"Global fit ($C_{ll}^{2332}$)",                           0.053 * INV_V2,    "blue",   "--"),
+    (r"NA64 current ($\hat{C}_{ll}^{2222}$)", na64_current_2222, "orange", "-",  2 * np.pi),
+    (r"NA64 current ($C_{ll}^{2233}$)",       na64_current_2233, "orange", "-.", 4 * np.pi),
+    (r"NA64 future ($\hat{C}_{ll}^{2222}$)",  na64_future_2222,  "orange", "--", 2 * np.pi),
+    (r"NA64 future ($C_{ll}^{2233}$)",        na64_future_2233,  "orange", ":",  4 * np.pi),
+    (r"Global fit ($\hat{C}_{ll}^{2222}$)",   0.23 * INV_V2 / 2, "blue",   "-",  2 * np.pi),
+    (r"Global fit ($C_{ll}^{2332}$)",         0.053 * INV_V2,    "blue",   "--", 4 * np.pi),
 ]
 
 # Vertical guide lines
@@ -59,13 +61,15 @@ exp_scales = [
 fig, ax = plt.subplots(figsize=(8.5, 6.0))
 
 # Unitarity
-ax.loglog(sqrt_s, unitarity, color="red", lw=2.5, label="Unitarity")
+ax.loglog(sqrt_s, unitarity_1f, color="red", lw=2.5, label=r"Unitarity $2\pi/s$ ($C_{ll}^{2222}$)")
+ax.loglog(sqrt_s, unitarity_2f, color="red", lw=2.5, ls="--",
+          label=r"Unitarity $4\pi/s$ ($C_{ll}^{2233}$, $C_{ll}^{2332}$)")
 
-# Horizontal bounds + crossing points
-for label, y, color, ls in bounds:
+# Horizontal bounds + crossing points (each with its own unitarity line)
+for label, y, color, ls, upref in bounds:
     ax.hlines(y, xmin=sqrt_s.min(), xmax=sqrt_s.max(),
               colors=color, linestyles=ls, linewidth=2.2, label=label)
-    s_cross = np.sqrt(2 * np.pi * 1e6 / y)
+    s_cross = np.sqrt(upref * 1e6 / y)
     if sqrt_s.min() < s_cross < sqrt_s.max():
         ax.plot(s_cross, y, "o", color=color, ms=6, zorder=5)
 
@@ -87,7 +91,7 @@ ax.set_ylim(1e-6, 1e5)
 ax.grid(True, which="major", axis="both", alpha=0.25)
 ax.grid(False, which="minor")
 
-ax.legend(loc="upper right", fontsize=9, frameon=True, fancybox=False, edgecolor="0.8")
+ax.legend(loc=(0.05,0.05), fontsize=9, frameon=True, fancybox=False, edgecolor="0.8")
 
 # Caption-ready title (you can remove or edit)
 # ax.text(0.03, 0.93, "NA64μ vs global fit on $\hat{C}_{ll}$ (μ-τ sector)",
@@ -103,6 +107,6 @@ plt.show()
 # Crossing scales (for your reference)
 # -------------------------------------------------
 print("\nCrossing scales with unitarity:")
-for label, y, _, _ in bounds:
-    s_cross = np.sqrt(2 * np.pi * 1e6 / y)
+for label, y, _, _, upref in bounds:
+    s_cross = np.sqrt(upref * 1e6 / y)
     print(f"  {label}: √s_cross ≈ {s_cross:.3g} GeV")
